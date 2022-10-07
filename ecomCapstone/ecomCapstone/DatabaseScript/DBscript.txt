@@ -1,0 +1,33 @@
+﻿Instructions:
+1- Open SSMS or any other Sql sever studio 
+2- Get Connect to the DB server 
+3- Copy the Sql Code in the Query editor 
+4- Execute the Code to create relevant database and Tables.
+
+Code :
+
+
+create database ecom;
+
+USE [ecom]
+GO
+
+CREATE TABLE [dbo].[Registration](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](500) NULL,
+	[Email] [varchar](1000) NOT NULL,
+	[Password] [varchar](500) NOT NULL,
+	[IsActive] [bit] NULL,
+	[CreatedOn] [datetime] NULL,
+	[UpdatedOn] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Registration] ADD  DEFAULT ((0)) FOR [IsActive]
+GO
+
+
