@@ -40,18 +40,18 @@ namespace ecomCapstone.Controllers
                 con.Close();
                 if (i > 0)
                 {
-                    op.Status = true;
+                    op.Success = true;
                     op.Message = "User Registered Successfully";
                 }
                 else
                 {
-                    op.Status = false;
+                    op.Success = false;
                     op.Message = "Error while saving";
                 }
             }
             catch(Exception ex)
             {
-                op.Status = false;
+                op.Success = false;
                 op.Message = ex.Message.ToString();
             }
             return op;  
@@ -72,18 +72,18 @@ namespace ecomCapstone.Controllers
                 da.Fill(dt);
                 if (dt.Rows.Count > 0)
                 {
-                    op.Status = true;
+                    op.Success = true;
                     op.Message = "User login successful";
                 }
                 else
                 {
-                    op.Status = false;
+                    op.Success = false;
                     op.Message = "invalid User";
                 }
             }
             catch(Exception ex)
             {
-                op.Status = false;
+                op.Success = false;
                 op.Message = ex.Message.ToString();
 
             }
