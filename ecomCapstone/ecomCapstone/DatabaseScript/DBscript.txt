@@ -31,3 +31,172 @@ ALTER TABLE [dbo].[Registration] ADD  DEFAULT ((0)) FOR [IsActive]
 GO
 
 
+CREATE TABLE [dbo].[ProductMaster](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](500) NULL,
+	[Description] [varchar](max) NULL,
+	[ImgUrl] [varchar](5000) NULL,
+	[Quantity] [int] NULL,
+	[Price] [decimal](18, 2) NULL,
+	[isActive] [bit] NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[UpdatedOn] [datetime] NULL,
+ CONSTRAINT [PK_ProductMaster] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[ProductMaster] ADD  CONSTRAINT [DF_ProductMaster_isActive]  DEFAULT ((1)) FOR [isActive]
+GO
+
+
+CREATE TABLE [dbo].[ProductCatgoryMapping](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[productid] [int] NOT NULL,
+	[categoryId] [int] NOT NULL,
+ CONSTRAINT [PK_ProductCatgoryMapping] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[CategoryMaster](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](500) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreatedOn] [datetime] NULL,
+	[UpdatedOn] [datetime] NULL,
+ CONSTRAINT [PK_CategoryMaster] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[CategoryMaster] ADD  CONSTRAINT [DF_CategoryMaster_IsActive]  DEFAULT ((1)) FOR [IsActive]
+GO
+
+
+
+INSERT INTO [dbo].[ProductMaster]
+           ([Name]
+           ,[Description]
+           ,[ImgUrl]
+           ,[Quantity]
+           ,[Price]
+           ,[isActive]
+           ,[CreatedOn]
+           )
+     VALUES
+           ('FINE-WALED CORDUROY SHIRT'
+           ,'Shirt with lapel collar and long sleeves. Front patch pocket. Front button closure.'
+           ,''
+           ,20
+           ,'100.20'
+           ,1
+           ,GETDATE()
+          )
+
+INSERT INTO [dbo].[ProductMaster]
+           ([Name]
+           ,[Description]
+           ,[ImgUrl]
+           ,[Quantity]
+           ,[Price]
+           ,[isActive]
+           ,[CreatedOn]
+           )
+     VALUES
+           ('LONG PLAID OVERSHIRT'
+           ,'Shirt with lapel collar and long sleeves. Front patch pocket. Front button closure.'
+           ,''
+           ,20
+           ,'120.20'
+           ,1
+           ,GETDATE()
+          )
+
+INSERT INTO [dbo].[ProductMaster]
+           ([Name]
+           ,[Description]
+           ,[ImgUrl]
+           ,[Quantity]
+           ,[Price]
+           ,[isActive]
+           ,[CreatedOn]
+           )
+     VALUES
+           ('HERITAGE EXPEDITION SHIRT'
+           ,'Shirt with lapel collar and long sleeves. Front patch pocket. Front button closure.'
+           ,''
+           ,20
+           ,'107.20'
+           ,1
+           ,GETDATE()
+          )
+
+
+
+
+
+INSERT INTO [dbo].[CategoryMaster]
+           ([Name]
+           
+           ,[CreatedOn]
+           )
+     VALUES
+           (
+           'Shirt',
+		   GETDATE()
+           )
+
+INSERT INTO [dbo].[CategoryMaster]
+           ([Name]
+           
+           ,[CreatedOn]
+           )
+     VALUES
+           (
+           'Shoes',
+		   GETDATE()
+           )
+
+INSERT INTO [dbo].[CategoryMaster]
+           ([Name]
+           
+           ,[CreatedOn]
+           )
+     VALUES
+           (
+           'Laptop',
+		   GETDATE()
+           )
+
+
+
+INSERT INTO [dbo].[ProductCatgoryMapping]
+           ([productid]
+           ,[categoryId])
+     VALUES
+           (3,1
+         )
+
+
+INSERT INTO [dbo].[ProductCatgoryMapping]
+           ([productid]
+           ,[categoryId])
+     VALUES
+           (2,1
+         )
+
+INSERT INTO [dbo].[ProductCatgoryMapping]
+           ([productid]
+           ,[categoryId])
+     VALUES
+           (1,1
+         )
+
+
