@@ -34,12 +34,12 @@ namespace ecomCapstone.Controllers
 
                 if (!String.IsNullOrEmpty(input.searchtext) )
                 {
-                    query = query + " AND PM.Name = '%" + input.searchtext + "%'";
+                    query = query + " AND PM.Name like '%" + input.searchtext + "%'";
                 }
 
                 if (!String.IsNullOrEmpty(input.category))
                 {
-                    query = query + " AND CM.Name = '%" + input.category + "%'"  ;
+                    query = query + " AND CM.Name = '" + input.category + "'"  ;
                 }
 
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
