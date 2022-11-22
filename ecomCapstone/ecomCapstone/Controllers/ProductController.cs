@@ -16,6 +16,14 @@ namespace ecomCapstone.Controllers
             _configuration = configuration;
         }
 
+
+
+        /// <summary>
+        /// space
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
         [HttpPost]
         [Route("GetProductData")]
         public ProductOutput<ProductList> GetProductData(ProductInput input)
