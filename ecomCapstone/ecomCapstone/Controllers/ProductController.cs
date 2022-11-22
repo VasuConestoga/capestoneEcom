@@ -66,12 +66,10 @@ namespace ecomCapstone.Controllers
                 if (dt.Rows.Count > 0)
                 {
                     op.Success = true;
-                    op.Message = "User login successful";
                 }
                 else
                 {
                     op.Success = false;
-                    op.Message = "invalid User";
                 }
             }
             catch (Exception ex)
@@ -203,5 +201,161 @@ namespace ecomCapstone.Controllers
             return op;
         }
 
+
+        [HttpPost]
+        [Route("AddCategory")]
+        public Response AddCategory(CategoryInput category)
+        {
+            Response op = new Response();
+            try
+            {
+                bool active = true;
+                DateTime createdOn = DateTime.UtcNow;
+
+                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
+                SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[CategoryMaster] ([Name],[IsActive],[CreatedOn])" +
+                    "VALUES ('" + category.name + "','"
+                                + active + "','"
+                                + createdOn + "')", con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+                if (i > 0)
+                {
+                    op.Success = true;
+                    op.Message = "Category Added Successfully";
+                }
+                else
+                {
+                    op.Success = false;
+                    op.Message = "Error while saving";
+                }
+            }
+            catch (Exception ex)
+            {
+                op.Success = false;
+                op.Message = ex.Message.ToString();
+
+            }
+            return op;
+        }
+
+        [HttpPost]
+        [Route("UpdateCategory")]
+        public Response UpdateCategory(CategoryInput category)
+        {
+            Response op = new Response();
+            try
+            {
+                DateTime UpdatedOn = DateTime.UtcNow;
+
+                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
+                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[CategoryMaster]  SET [Name] = '" + category.name
+                    + "',[UpdatedOn] ='" + UpdatedOn
+                    + "' WHERE Id = '" + category.ID + "'", con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+                if (i > 0)
+                {
+                    op.Success = true;
+                    op.Message = "Category Updated Successfully";
+                }
+                else
+                {
+                    op.Success = false;
+                    op.Message = "Error while saving";
+                }
+            }
+            catch (Exception ex)
+            {
+                op.Success = false;
+                op.Message = ex.Message.ToString();
+
+            }
+            return op;
+        }
+
+
+        [HttpPost]
+        [Route("DeleteCategory")]
+        public Response DeleteCategory(CategoryInput category)
+        {
+            Response op = new Response();
+            try
+            {
+                bool active = false;
+                DateTime UpdatedOn = DateTime.UtcNow;
+
+                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
+                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [isActive] = '" + active
+                    + "',[UpdatedOn] ='" + UpdatedOn
+                    + "' WHERE Id = '" + category.ID + "'", con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                con.Close();
+                if (i > 0)
+                {
+                    op.Success = true;
+                    op.Message = "Catgeory Deleted Successfully";
+                }
+                else
+                {
+                    op.Success = false;
+                    op.Message = "Error while saving";
+                }
+            }
+            catch (Exception ex)
+            {
+                op.Success = false;
+                op.Message = ex.Message.ToString();
+
+            }
+            return op;
+        }
+
+
+        [HttpGet]
+        [Route("GetCategoryData")]
+        public ProductOutput<CategoryInput> GetCategoryData()
+        {
+            ProductOutput<CategoryInput> op = new ProductOutput<CategoryInput>();
+            try
+            {
+                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
+
+                string query = string.Empty;
+                query = "select Id,Name from [dbo].[CategoryMaster] where 1=1 and [isActive] = 1 ";
+
+                SqlDataAdapter da = new SqlDataAdapter(query, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    op.Data.Add(new CategoryInput()
+                    {
+
+                        ID = Convert.ToInt32(item["Id"].ToString()),
+                        name = item["Name"].ToString(),
+                    });
+                }
+
+                if (dt.Rows.Count > 0)
+                {
+                    op.Success = true;
+                }
+                else
+                {
+                    op.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                op.Success = false;
+                op.Message = ex.Message.ToString();
+            }
+            return op;
+        }
     }
 }
