@@ -30,7 +30,7 @@ namespace ecomCapstone.Controllers
                     "PM.Description as ProductDescription , PM.Quantity , PM.Price , PM.ImgUrl as ProductImage,CM.Name as CategoryName " +
                     "from ProductMaster PM " +
                     "INNER JOIN ProductCatgoryMapping PCM on PM.ID = PCM.ProductId " +
-                    "INNER JOIN CategoryMaster CM on CM.ID = PCM.CategoryId where 1=1 and [isActive] = 1 ";
+                    "INNER JOIN CategoryMaster CM on CM.ID = PCM.CategoryId where 1=1 and PM.isActive = 1 ";
 
                 if (!String.IsNullOrEmpty(input.searchtext) )
                 {
