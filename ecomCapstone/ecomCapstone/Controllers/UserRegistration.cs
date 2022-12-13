@@ -26,7 +26,7 @@ namespace ecomCapstone.Controllers
             try
             {
                 bool useractive = true;
-                DateTime usercreatedOn = DateTime.UtcNow;
+                string usercreatedOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[Registration] ([Name] ," +

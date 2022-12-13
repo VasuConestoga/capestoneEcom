@@ -134,7 +134,7 @@ namespace ecomCapstone.Controllers
             Response op = new Response();
             try
             {
-                DateTime UpdatedOn = DateTime.UtcNow;
+                string UpdatedOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [Name] = '" + product.name
@@ -176,7 +176,7 @@ namespace ecomCapstone.Controllers
             try
             {
                 bool active = false;
-                DateTime UpdatedOn = DateTime.UtcNow;
+                string UpdatedOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [isActive] = '" + active
@@ -214,7 +214,7 @@ namespace ecomCapstone.Controllers
             try
             {
                 bool active = true;
-                DateTime createdOn = DateTime.UtcNow;
+                string createdOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("INSERT INTO [dbo].[CategoryMaster] ([Name],[IsActive],[CreatedOn])" +
@@ -251,7 +251,7 @@ namespace ecomCapstone.Controllers
             Response op = new Response();
             try
             {
-                DateTime UpdatedOn = DateTime.UtcNow;
+                string UpdatedOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("UPDATE [dbo].[CategoryMaster]  SET [Name] = '" + category.name
@@ -289,7 +289,7 @@ namespace ecomCapstone.Controllers
             try
             {
                 bool active = false;
-                DateTime UpdatedOn = DateTime.UtcNow;
+                string UpdatedOn = "2022-12-13 05:03:22.000";
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
                 SqlCommand cmd = new SqlCommand("UPDATE [dbo].[CategoryMaster]  SET [isActive] = '" + active
