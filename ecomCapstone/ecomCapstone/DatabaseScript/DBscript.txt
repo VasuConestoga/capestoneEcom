@@ -7,7 +7,17 @@
 Code :
 
 
-create database ecom;
+  IF EXISTS (SELECT name FROM master.dbo.sysdatabases 
+    WHERE name = N'ecom')
+	BEGIN
+	DROP DATABASE ecom
+	END
+	ELSE
+	BEGIN 
+	 CREATE DATABASE ecom
+	END
+
+
 
 USE [ecom]
 GO
@@ -200,3 +210,29 @@ INSERT INTO [dbo].[ProductCatgoryMapping]
          )
 
 
+
+CREATE PROCEDURE SP_AddProductwithCategorymapping
+	(@name varchar(1000) ='',
+	@descr varchar(MAX) = '',
+	@img varchar(5000)='',
+	@Qnty int =0,
+	@price decimal =0,
+	@categoryId int = 0
+	)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	DECLARE @ID INT= 0;
+
+	SET NOCOUNT ON;
+
+    INSERT INTO[dbo].[ProductMaster] ([Name],[Description],[ImgUrl],[Quantity],[Price],[isActive],[CreatedOn]) VALUES 
+	(@name,@descr,@img,@Qnty,@price,1,GETDATE());
+
+	SET @ID = (SELECT SCOPE_IDENTITY());
+
+	INSERT INTO ProductCatgoryMapping SELECT @ID,@categoryId
+	
+END
+GO

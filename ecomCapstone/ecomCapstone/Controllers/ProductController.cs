@@ -38,37 +38,37 @@ namespace ecomCapstone.Controllers
                     "PM.Description as ProductDescription , PM.Quantity , PM.Price , PM.ImgUrl as ProductImage,CM.Name as CategoryName " +
                     "from ProductMaster PM " +
                     "INNER JOIN ProductCatgoryMapping PCM on PM.ID = PCM.ProductId " +
-                    "INNER JOIN CategoryMaster CM on CM.ID = PCM.CategoryId where 1=1 and PM.isActive = 1 ";
+                    "INNER JOIN CategoryMaster CM on CM.ID = PCM.CategoryId where  PM.isActive = 1 ";
 
-                if (!String.IsNullOrEmpty(input.searchtext) )
+                if (!String.IsNullOrEmpty(input.searchtext))
                 {
                     query = query + " AND PM.Name like '%" + input.searchtext + "%'";
                 }
 
                 if (!String.IsNullOrEmpty(input.category))
                 {
-                    query = query + " AND CM.Name = '" + input.category + "'"  ;
+                    query = query + " AND CM.Name = '" + input.category + "'";
                 }
 
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                foreach(DataRow item in dt.Rows)
+                foreach (DataRow item in dt.Rows)
                 {
                     op.Data.Add(new ProductList()
-                        { 
+                    {
 
-                    Id = Convert.ToInt32(item["ProductId"].ToString()),
-                    name = item["ProductName"].ToString(),
-                    description = item["ProductDescription"].ToString(),
-                    category = item["CategoryName"].ToString(),
-                    imageUrl = item["ProductImage"].ToString(),
-                    price = Convert.ToDecimal(item["Price"].ToString()),
-                    quantity = Convert.ToInt32(item["Quantity"].ToString()),
+                        Id = Convert.ToInt32(item["ProductId"].ToString()),
+                        name = item["ProductName"].ToString(),
+                        description = item["ProductDescription"].ToString(),
+                        category = item["CategoryName"].ToString(),
+                        imageUrl = item["ProductImage"].ToString(),
+                        price = Convert.ToDecimal(item["Price"].ToString()),
+                        quantity = Convert.ToInt32(item["Quantity"].ToString()),
 
-                });
-            }
+                    });
+                }
 
 
                 if (dt.Rows.Count > 0)
@@ -94,39 +94,35 @@ namespace ecomCapstone.Controllers
         public Response AddProduct(ProductList product)
         {
             Response op = new Response();
+            SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
             try
             {
-                bool active = true;
-                DateTime createdOn = DateTime.UtcNow;
-
-                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
-                SqlCommand cmd = new SqlCommand("INSERT INTO[dbo].[ProductMaster] ([Name],[Description],[ImgUrl],[Quantity],[Price],[isActive],[CreatedOn])" +
-                    "VALUES ('" + product.name + "','" 
-                                + product.description + "','" 
-                                + product.imageUrl + "','" 
-                                + product.quantity + "','" 
-                                + product.price + "','"
-                                + active + "','"
-                                + createdOn + "')", con);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "SP_AddProductwithCategorymapping";
+                cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = product.name;
+                cmd.Parameters.Add("@descr", SqlDbType.VarChar).Value = product.description;
+                cmd.Parameters.Add("@img", SqlDbType.VarChar).Value = product.imageUrl;
+                cmd.Parameters.Add("@Qnty", SqlDbType.Int).Value = product.quantity;
+                cmd.Parameters.Add("@price", SqlDbType.Decimal).Value = product.price;
+                cmd.Parameters.Add("@categoryId", SqlDbType.Int).Value = product.category;
+                cmd.Connection = con;
                 con.Open();
-                int i = cmd.ExecuteNonQuery();
-                con.Close();
-                if (i > 0)
-                {
-                    op.Success = true;
-                    op.Message = "Product Added Successfully";
-                }
-                else
-                {
-                    op.Success = false;
-                    op.Message = "Error while saving";
-                }
+                cmd.ExecuteNonQuery();
+                op.Success = true;
+                op.Message = "Product Added Successfully";
             }
+
             catch (Exception ex)
             {
+                throw ex;
                 op.Success = false;
-                op.Message = ex.Message.ToString();
-
+                op.Message = ex.Message;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
             }
             return op;
         }
@@ -141,11 +137,11 @@ namespace ecomCapstone.Controllers
                 DateTime UpdatedOn = DateTime.UtcNow;
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
-                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [Name] = '" + product.name 
+                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [Name] = '" + product.name
                     + "',[Description] = '" + product.description
-                    + "',[ImgUrl] = '" + product.imageUrl 
-                    + "',[Quantity] ='" + product.quantity 
-                    + "',[Price] ='" + product.price 
+                    + "',[ImgUrl] = '" + product.imageUrl
+                    + "',[Quantity] ='" + product.quantity
+                    + "',[Price] ='" + product.price
                     + "',[UpdatedOn] ='" + UpdatedOn
                     + "' WHERE Id = '" + product.Id + "'", con);
                 con.Open();
@@ -296,7 +292,7 @@ namespace ecomCapstone.Controllers
                 DateTime UpdatedOn = DateTime.UtcNow;
 
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
-                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[ProductMaster]  SET [isActive] = '" + active
+                SqlCommand cmd = new SqlCommand("UPDATE [dbo].[CategoryMaster]  SET [isActive] = '" + active
                     + "',[UpdatedOn] ='" + UpdatedOn
                     + "' WHERE Id = '" + category.ID + "'", con);
                 con.Open();
