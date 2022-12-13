@@ -78,7 +78,14 @@ namespace ecomCapstone.Controllers
                     {
                       isAdmin = true,
                     });
-                } 
+                }
+                else
+                {
+                    op.Data.Add(new useroutdata()
+                    {
+                        isAdmin = false,
+                    });
+                }
                 if (dt.Rows.Count > 0)
                 {
                     op.Success = true;
