@@ -60,9 +60,10 @@ namespace ecomCapstone.Controllers
 
         [HttpPost]
         [Route("loginUser")]
-        public Response loginUser(Registration register)
+        public ResponseObj<useroutdata> loginUser(Registration register)
         {
-            Response op = new Response();
+           
+            ResponseObj<useroutdata> op = new ResponseObj<useroutdata>();
             try
             {
                 SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
@@ -71,6 +72,13 @@ namespace ecomCapstone.Controllers
                     "' and [Password] = '" + register.password + "'  and IsActive = 1  ", con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
+                if(dt.Rows[0]["IsAdmin"].ToString() == "True")
+                {
+                    op.Data.Add(new useroutdata()
+                    {
+                      isAdmin = true,
+                    });
+                } 
                 if (dt.Rows.Count > 0)
                 {
                     op.Success = true;
