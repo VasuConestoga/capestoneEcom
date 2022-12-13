@@ -17,5 +17,7 @@
         public string password { get; set; } = string.Empty;
 
         public bool isActive { get; set; } = true;
+
+        public bool isAdmin { get; set; } = false;
     }
 }

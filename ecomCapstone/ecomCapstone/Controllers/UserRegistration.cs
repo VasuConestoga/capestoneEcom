@@ -106,5 +106,51 @@ namespace ecomCapstone.Controllers
             return op;
         }
 
+        [HttpGet]
+        [Route("GetUserData")]
+        public ResponseObj<Registration> GetUserData()
+        {
+
+            ResponseObj<Registration> op = new ResponseObj<Registration>();
+            try
+            {
+                SqlConnection con = new SqlConnection(_configuration.GetConnectionString("EcomCon").ToString());
+                SqlDataAdapter da =
+                    new SqlDataAdapter("select * from [dbo].[Registration] where IsActive = 1  ", con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    op.Data.Add(new Registration()
+                    {
+
+                        ID = Convert.ToInt32(item["ID"].ToString()),
+                        name = item["Name"].ToString(),
+                        email = item["Email"].ToString(),
+                        isAdmin= Convert.ToBoolean(item["IsAdmin"].ToString()),
+                    });
+                }
+
+
+                if (dt.Rows.Count > 0)
+                {
+                    op.Success = true;
+                    op.Message = " successful";
+                }
+                else
+                {
+                    op.Success = false;
+                    op.Message = "No Data ";
+                }
+            }
+            catch (Exception ex)
+            {
+                op.Success = false;
+                op.Message = ex.Message.ToString();
+
+            }
+            return op;
+        }
     }
 }
